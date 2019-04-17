@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int * compress(double ** a_table, int *a_size)
+{
+    double *tab2;
+    int *tab_ind;
+    int n=0,x=0;
+    for(int i=0; i< (*a_size); i++)
+        {
+         if((*a_table)[i]!=0)
+            {
+             n++;
+            }
+        }
+    tab2=calloc(n, sizeof(double));
+    tab_ind=calloc(n, sizeof(int));
+    if(tab2==NULL||tab_ind==NULL)
+        {
+         printf("B31d alokacji");
+         return 0;
+        }
+    n=0;
+    for(int i=0; i< (*a_size); i++)
+        {
+         if((*a_table)[i]!=0)
+            {
+             tab2[n]=(*a_table)[i];
+             tab_ind[n]=i;
+             n++;
+            }
+        }
+
+    free(*a_table);
+    *a_table=NULL;
+    *a_table=tab2;
+    *a_size = n;
+
+    return tab_ind;
+}
+
+
+int main()
+{
+    double *tab;
+    int n=10;
+    int *tab_ind;
+
+    tab=calloc(n,sizeof(double));
+    tab[2]=3.0, tab[5]=1.0, tab[8]=7.0;
+
+    tab_ind=compress(&tab,&n);
+    for(int i=0; i<n; i++)
+        {
+         printf("%lf ",tab[i]);
+        }
+    printf("\n\n");
+    for(int i=0; i<n; i++)
+        {
+         printf("%d ",tab_ind[i]);
+        }
+    free(tab);
+    free(tab_ind);
+
+    return 0;
+}

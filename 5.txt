@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+void deleteMatrix(double*** a_tab, int n)
+{
+    for(int i=0; i<n; i++)
+    {
+        free((*a_tab)[i]);
+    }
+    free(*a_tab);
+    *a_tab=NULL;
+}
+
+double** createMatrix(int n)
+{
+    double **tab;
+
+    tab=malloc(n*sizeof(double *));
+
+    for(int i=0; i<n; i++)
+    {
+        tab[i]=malloc(n*sizeof(double *));
+        if(tab[i]==NULL)
+        {
+            deleteMatrix(&tab, n);
+            printf("B³ad alokacji \n");
+            return 0;
+        }
+    }
+    return tab;
+}
+
+void fillMatrix(double** tab, int n)
+{
+    double z=1;
+    for(int y=0; y<n; y++)
+    {
+        for(int x=0; x<n; x++)
+        {
+            tab[x][y]=z;
+            z++;
+        }
+    }
+}
+
+void printMatrix(double** tab, int n)
+{
+    int x=0;
+    for(int y=0; y<n; y++)
+    {
+        for(int x=0; x<n; x++)
+        {
+            printf("%lf  ",tab[x][y]);
+        }
+        if(x==0) printf("\n");
+    }
+}
+int main()
+{
+    double **tab;
+    int rozmiar;
+    printf("Podaj rozmiar tablicy \n");
+    scanf("%d", &rozmiar);
+
+    tab=createMatrix(rozmiar);
+    fillMatrix(tab,rozmiar);
+    printMatrix(tab,rozmiar);
+    deleteMatrix(&tab, rozmiar);
+
+    return 0;
+
+}

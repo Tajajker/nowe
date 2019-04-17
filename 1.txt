@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+  typedef struct
+  {
+  float rzecz;
+  float uroj;
+  }
+  liczba_zesp;
+
+  void wypisz_zesp(liczba_zesp z)
+  {
+   printf("%.2f %+.2fi \n", z.rzecz, z.uroj);
+  }
+  liczba_zesp dodawanie(liczba_zesp x, liczba_zesp y)
+  {
+      liczba_zesp w={
+      w.rzecz=x.rzecz+y.rzecz,
+      w.uroj=x.uroj+y.uroj
+      };
+      return w;
+  }
+  float modol(liczba_zesp z)
+  {
+      float f=0;
+      f=sqrt((z.rzecz*z.rzecz)+(z.uroj*z.uroj));
+      return f;
+  }
+  liczba_zesp sprzerzenie(liczba_zesp z)
+ {
+     liczba_zesp s={
+     s.rzecz=z.rzecz,
+     s.uroj=(-1)*z.uroj
+     };
+     return s;
+ }
+
+int main()
+{
+liczba_zesp liczba_1={.rzecz=2, .uroj=1};
+liczba_zesp liczba_2={4,3};
+liczba_zesp liczba_wyn;
+//float wynik;
+int operacja;
+ do {
+   printf("Co mam zrobiæ? (1 - dodawanie, 2 - modol, 3 - sprzezenie, 0 - koniec)\n");
+   scanf("%d", &operacja);
+   switch(operacja) {
+      case 1:
+      liczba_wyn=dodawanie(liczba_1, liczba_2);
+      wypisz_zesp(liczba_wyn);
+      break;
+
+      case 2:
+      liczba_wyn=(liczba_zesp){modol(liczba_1), 0};
+      wypisz_zesp(liczba_wyn);
+      break;
+
+      case 3:
+      liczba_wyn=sprzerzenie(liczba_2);
+      wypisz_zesp(liczba_wyn);
+      break;
+      }
+   } while(operacja != 0);
+    return 0;
+}

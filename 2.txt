@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct baza
+{
+    int max_size;
+    int act_size;
+    struct wpis *tab;
+};
+
+struct wpis
+{
+  char imie[30];
+  char nazwisko[30];
+  char telefon[30];
+};
+
+void wypisz(struct baza *baza)
+{
+    if(baza->act_size==0) printf("Brak danych do wypisania.\n");
+    else
+    {
+        for(int i=0; i<baza->act_size; i++)
+        {
+            printf("%d:   Imie %s\n Nazwisko %s\n Telefon %s\n",i,baza->tab[i].imie, baza->tab[i].nazwisko, baza->tab[i].telefon);
+        }
+    }
+}
+
+void dodanie(struct baza *a_bazy, struct wpis *a_wpisu)
+{
+    if(a_bazy->act_size>=a_bazy->max_size)
+    {
+       a_bazy +=10;
+       a_bazy->tab = realloc(a_bazy->tab,(a_bazy->act_size)*sizeof(struct wpis));
+    }
+   else
+    {
+        a_bazy->tab[a_bazy->act_size]=*a_wpisu;
+        a_bazy->act_size++;
+    }
+}
+
+void usun(struct baza* b, int i)
+{
+    for(; i<b->act_size ;i++)
+    {
+        b->tab[i]=b->tab[i+1];
+    }
+    b->act_size --;
+}
+
+int main()
+{
+struct baza baza={10,0,malloc(10*sizeof(struct wpis))}    ;
+int indeks = 0;
+int operacja = 0;
+ do {
+   printf("Co mam zrobic? (1 - wypisanie, 2 - dodawanie, 3 - usuwanie, 0 - koniec)\n");
+   scanf("%d", &operacja);
+   getchar();
+   struct wpis nowy;
+   switch(operacja) {
+      case 1:
+      wypisz(&baza);
+      break;
+
+      case 2:
+
+      printf("Podaj imie: ");
+      fgets(nowy.imie,30,stdin);
+      printf("Podaj nazwisko: ");
+      fgets(nowy.nazwisko,30,stdin);
+      printf("Podaj telefon: ");
+      fgets(nowy.telefon,30,stdin);
+      dodanie(& baza,&nowy);
+      break;
+
+      case 3:
+      printf("Podaj numer do usuniêcia.\n");
+      scanf("%d",&indeks);
+      usun(&baza,indeks);
+      break;
+      }
+   } while(operacja != 0);
+ return 0;
+ }

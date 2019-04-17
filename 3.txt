@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct osoba {
+    char imie[30];
+    char nazwisko[30];
+    int rok;
+};
+
+struct list {
+    struct osoba osoba;
+    struct list* next;
+};
+
+void printList(struct list *head)
+{
+    if(!head) return;
+    do {
+        printf("imie: %s; nazwisko: %s; rok: %i\n", head->osoba.imie, head->osoba.nazwisko, head->osoba.rok);
+    } while(head = head->next);
+}
+
+struct list* addList(struct list *head, struct osoba *a_wpis )
+{
+    struct list* utworz;
+    if(!(utworz = malloc(sizeof(struct list))))
+    {
+        printf("Nie udalo sie zaalokowac tablicy!\n");
+        return head;
+    }
+    utworz->osoba = *a_wpis;
+    utworz->next = head;
+    return utworz;
+}
+
+void deleteElem(struct list **head)
+{
+    if(!*head) return;
+    struct list* kopia = *head;
+    *head = (*head)->next;
+    free(kopia);
+}
+
+void deleteList(struct list **head)
+{
+    while(*head) deleteElem(head);
+}
+
+int main()
+{
+    struct list* head = malloc(sizeof(struct list));
+    *head = (struct list){{"Andrzej", "Duda", 1974}, NULL};
+    struct osoba nowy = {"Karol", "Krawczyk", 1950};
+    int operacja = 0;
+    do {
+        printf("Co mam zrobic? (1 - wypisanie, 2 - dodawanie, 3 - usuwanie, 4 - usuwanie listy, 0 - koniec)\n");
+        scanf("%d", &operacja);
+        switch(operacja) {
+            case 1:
+                printList(head);
+            break;
+            case 2:
+                head = addList(head, &nowy);
+            break;
+            case 3:
+                deleteElem(&head);
+            break;
+            case 4:
+                deleteList(&head);
+            break;
+        }
+    } while(operacja);
+    return 0;
+}
